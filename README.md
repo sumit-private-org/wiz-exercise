@@ -1,0 +1,2 @@
+# wiz-exercise
+Tech Exercise
