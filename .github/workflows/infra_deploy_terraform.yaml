@@ -1,13 +1,13 @@
 name: Deploy Infrastructure (Terraform)
 
 on:
-  push:
-    branches:
-      - main # Or your primary branch
-    paths:
+  #push:
+  #  branches:
+  #    - main # Or your primary branch
+  #  paths:
       # Adjust path if your terraform files are elsewhere
-      - 'terraform/**'
-      - '.github/workflows/infra_deploy_terraform.yaml'
+  #    - 'terraform/**'
+  #    - '.github/workflows/infra_deploy_terraform.yaml'
   workflow_dispatch: # Allow manual trigger
 
 env:
