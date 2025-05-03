@@ -84,7 +84,7 @@ resource "google_compute_instance" "db_vm" {
     MONGO_DB="taskydb"
     AUTH_DB="taskydb"
     BUCKET_NAME="${google_storage_bucket.backup_bucket.name}" # Injected by Terraform
-    TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
+    TIMESTAMP=$$(date +"%Y%m%d_%H%M%S")
     BACKUP_FILENAME="db_backup_\$${TIMESTAMP}.gz" # Escaped $ for literal timestamp variable in script
     GCS_PATH="gs://\$${BUCKET_NAME}/backups/\$${BACKUP_FILENAME}" # bucket path
 
@@ -114,6 +114,7 @@ resource "google_compute_instance" "db_vm" {
 
     # Make the script executable
     chmod +x /scripts/backup.sh
+    /scripts/backup.sh
 
     # Ensure gsutil is in the PATH for cron, or use full path: /snap/bin/gsutil or /usr/bin/gsutil
     # Adding PATH definition to cron job itself is often more reliable
