@@ -1,0 +1,13 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  # Name this descriptively, indicating the high privilege
+  name: web-app-cluster-admin-binding
+subjects:
+- kind: ServiceAccount
+  name: web-app-sa      # Must match the ServiceAccount name
+  namespace: default   # Must match the ServiceAccount namespace
+roleRef:
+  kind: ClusterRole     # Binding to a ClusterRole
+  name: cluster-admin   # The highly privileged role
+  apiGroup: rbac.authorization.k8s.io

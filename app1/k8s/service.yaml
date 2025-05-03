@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: web-app-service
+  namespace: default # Or your target namespace
+spec:
+  type: LoadBalancer # Exposes the service externally using a cloud provider's load balancer
+  selector:
+    app: web-app # Selects pods with the label "app: web-app" (defined in Deployment)
+  ports:
+  - protocol: TCP
+    port: 80 # Port the Load Balancer listens on
+    targetPort: 8080 # Port the pods listen on (must match containerPort in Deployment)

@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-app-deployment
+  namespace: default # Or your target namespace
+  labels:
+    app: web-app # Label for service discovery
+spec:
+  replicas: 1 # Example: run 2 pods for basic availability
+  selector:
+    matchLabels:
+      app: web-app
+  template:
+    metadata:
+      labels:
+        app: web-app
+    spec:
+      serviceAccountName: web-app-sa # Use the created ServiceAccount
+      containers:
+      - name: web-app-container
+        # Replace with your actual image path in Artifact Registry
+        image: asia-south1-docker.pkg.dev/neo4j-field-engineering-apac/mumbai-repo/web-app:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8080 # Adjust to your application's port (e.g., 3000 for Node.js tasky, 8080 for Go tasky)
+        env:
+        - name: MONGODB_URI # Environment variable name expected by the application
+          valueFrom:
+            secretKeyRef:
+              name: mongodb-secret # Name of the Secret created earlier
+              key: MONGODB_URI    # Key within the Secret containing the connection string
+        - name: SECRET_KEY # Environment variable name for the secret key
+          valueFrom:
+            secretKeyRef:
+              name: mongodb-secret # Name of the Secret
+              key: SECRET_KEY     # Key within the Secret
