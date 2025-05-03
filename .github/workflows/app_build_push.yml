@@ -1,0 +1,76 @@
+# This workflow will build a docker container, publish it to Google Container
+# Registry, and deploy it to GKE when there is a push to the "main"
+# branch.
+#
+# To configure this workflow:
+#
+# 1. Enable the following Google Cloud APIs:
+#
+#    - Artifact Registry (artifactregistry.googleapis.com)
+#    - Google Kubernetes Engine (container.googleapis.com)
+name: Build and Push Application Container
+
+on:
+  push:
+    branches:
+      - main # Or your primary branch
+    paths:
+      # Adjust path if your app code/Dockerfile are elsewhere
+      - 'app1/**'
+      - '.github/workflows/app_build_push.yaml'
+  workflow_dispatch: # Allow manual trigger
+
+env:
+  # Set your GCP Project ID
+  GCP_PROJECT_ID: ${{ vars.GCP_PROJECT_ID }}
+  # Set your Artifact Registry location (e.g., us-central1)
+  GAR_LOCATION: 'us-central1'
+  # Set your Artifact Registry repository name
+  GAR_REPOSITORY: 'wiz-app-repo' # e.g., wiz-app-repo
+  # Set the name for your container image
+  IMAGE_NAME: 'tasky-app' # Or tasky, etc.
+  # Set the working directory for the Docker build context
+  APP_WORKING_DIR: app1
+
+permissions:
+  contents: read
+  id-token: write # Required for Workload Identity Federation
+
+jobs:
+  build-push:
+    name: 'Build and Push to Artifact Registry'
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Authenticate to Google Cloud
+      uses: google-github-actions/auth@v2
+      with:
+        credentials_json: ${{ secrets.GOOGLE_CREDENTIALS }}
+        #workload_identity_provider: ${{ env.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+        #service_account: ${{ env.GCP_SERVICE_ACCOUNT }}
+
+    - name: Set up Cloud SDK
+      uses: google-github-actions/setup-gcloud@v2
+
+    - name: Authorize Docker push
+      run: gcloud auth configure-docker ${{ env.GAR_LOCATION }}-docker.pkg.dev
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+    - name: Build and push Docker image
+      uses: docker/build-push-action@v5
+      with:
+        context: ${{ env.APP_WORKING_DIR }} # Path to Dockerfile and app code
+        push: true
+        # Use commit SHA for tagging for better traceability
+        tags: ${{ env.GAR_LOCATION }}-docker.pkg.dev/${{ vars.GCP_PROJECT_ID }}/${{ env.GAR_REPOSITORY }}/${{ env.IMAGE_NAME }}:latest
+        # Optionally add 'latest' tag for the main branch
+        # tags: |
+        #   ${{ env.GAR_LOCATION }}-docker.pkg.dev/${{ env.GCP_PROJECT_ID }}/${{ env.GAR_REPOSITORY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+        #   ${{ github.ref == 'refs/heads/main' && format('{0}-docker.pkg.dev/{1}/{2}/{3}:latest', env.GAR_LOCATION, env.GCP_PROJECT_ID, env.GAR_REPOSITORY, env.IMAGE_NAME) || '' }}
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
