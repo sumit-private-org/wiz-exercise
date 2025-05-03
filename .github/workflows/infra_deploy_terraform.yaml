@@ -15,11 +15,6 @@ env:
   TF_WORKING_DIR: terraform
   # Set your GCP Project ID
   GCP_PROJECT_ID: ${{ vars.GCP_PROJECT_ID }}
-  # Set your GCP Workload Identity Provider
-  # Format: projects/<PROJECT_NUMBER>/locations/global/workloadIdentityPools/<POOL_ID>/providers/<PROVIDER_ID>
-  GCP_WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
-  # Set the Service Account email GitHub Actions will impersonate
-  GCP_SERVICE_ACCOUNT: ${{ secrets.GCP_SERVICE_ACCOUNT }} # e.g., github-actions-deployer@<your-project-id>.iam.gserviceaccount.com
   # Optional: Set Terraform Cloud/GCS backend bucket if needed
   # TF_BACKEND_BUCKET: '<YOUR_TF_STATE_BUCKET>'
 
@@ -39,8 +34,8 @@ jobs:
     - name: Authenticate to Google Cloud
       uses: google-github-actions/auth@v2
       with:
-        workload_identity_provider: $GCP_WORKLOAD_IDENTITY_PROVIDER
-        service_account: $GCP_SERVICE_ACCOUNT
+        workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+        service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
 
     - name: Set up Terraform
       uses: hashicorp/setup-terraform@v3
@@ -50,23 +45,23 @@ jobs:
     - name: Terraform Init
       id: init
       run: terraform init
-      working-directory: $TF_WORKING_DIR
+      working-directory: ${{ env.TF_WORKING_DIR }}
       # Add backend config if using GCS/Terraform Cloud
       # run: terraform init -backend-config="bucket=${{ env.TF_BACKEND_BUCKET }}"
 
     - name: Terraform Validate
       id: validate
       run: terraform validate -no-color
-      working-directory: $TF_WORKING_DIR
+      working-directory: ${{ env.TF_WORKING_DIR }}
 
     - name: Terraform Plan
       id: plan
       run: terraform plan -no-color -out=tfplan
-      working-directory: $TF_WORKING_DIR
+      working-directory: ${{ env.TF_WORKING_DIR }}
 
     - name: Terraform Apply
       id: apply
       # Only apply on the main branch automatically
       if: github.ref == 'refs/heads/main'
       run: terraform apply -auto-approve tfplan
-      working-directory: $TF_WORKING_DIR
+      working-directory: ${{ env.TF_WORKING_DIR }}
