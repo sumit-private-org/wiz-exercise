@@ -1,0 +1,47 @@
+name: Deploy Application to GKE
+
+on:
+  push:
+    branches:
+      - main # Or your deployment branch
+    paths:
+      - 'app1/k8s/**' # Trigger on k8s manifest changes
+      - '.github/workflows/deploy_to_gke.yaml' # Trigger on workflow changes
+  workflow_dispatch: # Allow manual trigger
+
+jobs:
+  deploy:
+    name: Deploy to GKE
+    runs-on: ubuntu-latest
+    permissions:
+      contents: 'read'
+      id-token: 'write' # Needed for Workload Identity Federation
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Authenticate to Google Cloud
+      id: auth
+      uses: google-github-actions/auth@v2
+      with:
+        credentials_json: ${{ secrets.GOOGLE_CREDENTIALS }}
+        #workload_identity_provider: '${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}' # Use secrets!
+        #service_account: '${{ secrets.GCP_SERVICE_ACCOUNT }}' # Use secrets!
+
+    - name: Get GKE Credentials
+      uses: google-github-actions/get-gke-credentials@v2
+      with:
+        cluster_name: ${{ vars.CLUSTER_NAME }}
+        location: ${{ vars.LOCATION }}
+        project_id: ${{ vars.GCP_PROJECT_ID }}
+
+    - name: Deploy Kubernetes Manifests
+      run: |
+        echo "Applying Kubernetes manifests..."
+        # Apply all yaml files in the directory:
+        kubectl apply -f app1/k8s/
+
+    # Optional: Add steps for verification, notifications, etc.
+    - name: Verify deployment
+      run: kubectl rollout status deployment/tasky-app-deployment -n default --timeout=120s
