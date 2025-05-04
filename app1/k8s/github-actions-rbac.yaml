@@ -1,0 +1,13 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: github-actions-sa-cluster-admin
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin # Grants full cluster permissions
+subjects:
+- kind: User
+  # Use the email address of the GCP Service Account being impersonated
+  name: github-actions-sa@clgcporg10-183.iam.gserviceaccount.com
+  apiGroup: rbac.authorization.k8s.io
