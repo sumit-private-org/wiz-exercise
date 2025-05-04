@@ -8,10 +8,10 @@ terraform {
   }
 
   # Optional: Configure GCS backend for state management
-  # backend "gcs" {
-  #   bucket = var.storage_bucket_name # Replace with your GCS bucket name
-  #   prefix = "terraform-state/"
-  # }
+  backend "gcs" {
+     bucket = "clgcporg10-183-terraform" # Replace with your GCS bucket name
+     prefix = "terraform-state/"
+   }
 }
 
 provider "google" {

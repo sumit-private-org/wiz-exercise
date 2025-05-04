@@ -47,11 +47,11 @@ variable "private_subnet_cidr" {
   default     = "10.10.20.0/24" # Ensure this doesn't overlap with public subnet
 }
 
-variable "gke_master_ipv4_cidr_block" {
-  description = "The CIDR block for the GKE control plane (required for private cluster)."
-  type        = string
-  default     = "172.16.0.0/28" # Must be /28, RFC1918, and unique within the VPC
-}
+#variable "gke_master_ipv4_cidr_block" {
+#  description = "The CIDR block for the GKE control plane (required for private cluster)."
+#  type        = string
+#  default     = "172.16.0.0/28" # Must be /28, RFC1918, and unique within the VPC
+#}
 
 variable "db_server_tag" {
   description = "Network tag for the database server VM."
