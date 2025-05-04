@@ -84,8 +84,8 @@ resource "google_compute_instance" "db_vm" {
     MONGO_DB="taskydb"
     AUTH_DB="taskydb"
     BUCKET_NAME="${google_storage_bucket.backup_bucket.name}" # Injected by Terraform
-    TIMESTAMP=$$(date +"%Y%m%d_%H%M%S")
-    BACKUP_FILENAME="db_backup_\$${TIMESTAMP}.gz" # Escaped $ for literal timestamp variable in script
+    TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
+    BACKUP_FILENAME="mongodb_backup_\$${TIMESTAMP}.gz" # Escaped $ for literal timestamp variable in script
     GCS_PATH="gs://\$${BUCKET_NAME}/backups/\$${BACKUP_FILENAME}" # bucket path
 
     # --- Execution ---
@@ -111,7 +111,10 @@ resource "google_compute_instance" "db_vm" {
     echo "Backup process finished at \$$(date)" # Escaped $
     exit 0
   BACKUP
-
+    
+    # Sleep for 1 minutes after creating the backup script
+    echo "Sleeping for 1 minute..."
+    sleep 60
     # Make the script executable
     chmod +x /scripts/backup.sh
     /scripts/backup.sh

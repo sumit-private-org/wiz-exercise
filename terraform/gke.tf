@@ -23,10 +23,9 @@ resource "google_container_cluster" "primary" {
     }
   }
 
-  master_authorized_networks_config {
-      gcp_public_cidrs_access_enabled = true
-      private_endpoint_enforcement_enabled = false
-    }
+  #master_authorized_networks_config {
+  #    private_endpoint_enforcement_enabled = true
+  #  }
 
   # --- Private Cluster Configuration ---
   private_cluster_config {
