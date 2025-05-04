@@ -36,6 +36,11 @@ jobs:
         location: ${{ vars.LOCATION }}
         project_id: ${{ vars.GCP_PROJECT_ID }}
 
+    - name: Apply RBAC for GitHub Actions Service Account
+      run: |
+        echo "Applying RBAC permissions for GitHub Actions SA..."
+        kubectl apply -f app1/k8s/github-actions-rbac.yaml # Adjust path if needed
+
     - name: Deploy Kubernetes Manifests
       run: |
         echo "Applying Kubernetes manifests..."
