@@ -58,13 +58,16 @@ resource "google_container_node_pool" "primary_nodes" {
   node_config {
     machine_type = var.gke_node_machine_type
     tags         = [var.gke_nodes_tag, var.network_name] # Apply tag for firewall rules
-    # Nodes in private clusters don't need external IPs
-    enable_private_nodes = true
     # Use default GKE service account or specify a custom one
     service_account = "github-actions-sa@clgcporg10-183.iam.gserviceaccount.com"
     oauth_scopes = [
       "https://www.googleapis.com/auth/cloud-platform"
     ]
+  }
+
+  network_config {
+    # Nodes in private clusters don't need external IPs
+    enable_private_nodes = true
   }
 
   management {
