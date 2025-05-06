@@ -6,7 +6,7 @@ on:
       - main # Or your deployment branch
     paths:
       - 'app1/k8s/**' # Trigger on k8s manifest changes
-      - '.github/workflows/deploy_to_gke.yaml' # Trigger on workflow changes
+      - '.github/workflows/deploy_to_gke.yml' # Trigger on workflow changes
   workflow_dispatch: # Allow manual trigger
 
 jobs:
