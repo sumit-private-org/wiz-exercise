@@ -1,0 +1,30 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: tasky-app-egress
+  namespace: default # Or your app's namespace
+spec:
+  podSelector:
+    matchLabels:
+      app: tasky-app # Label on your app pods
+  policyTypes:
+  - Egress
+  egress:
+  - to:
+    - ipBlock:
+        cidr: 10.10.10.2/32 # Replace with actual internal IP
+    ports:
+    - protocol: TCP
+      port: 27017
+  - to:
+    - namespaceSelector:    # Allow DNS resolution (kube-dns)
+       matchLabels:
+          networking/namespace: kube-system
+      podSelector:
+        matchLabels:
+          k8s-app: kube-dns 
+    ports:
+    - protocol: UDP
+      port: 53
+    - protocol: TCP
+      port: 53
