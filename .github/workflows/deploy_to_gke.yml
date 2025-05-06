@@ -25,9 +25,9 @@ jobs:
       id: auth
       uses: google-github-actions/auth@v2
       with:
-        credentials_json: ${{ secrets.GOOGLE_CREDENTIALS }}
-        #workload_identity_provider: '${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}' # Use secrets!
-        #service_account: '${{ secrets.GCP_SERVICE_ACCOUNT }}' # Use secrets!
+        # credentials_json: ${{ secrets.GOOGLE_CREDENTIALS }}
+        workload_identity_provider: '${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}' # Use secrets!
+        service_account: '${{ secrets.GCP_SERVICE_ACCOUNT }}' # Use secrets!
 
     - name: Get GKE Credentials
       uses: google-github-actions/get-gke-credentials@v2
