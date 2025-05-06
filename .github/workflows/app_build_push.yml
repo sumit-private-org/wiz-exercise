@@ -17,7 +17,7 @@ on:
     paths:
       # Adjust path if your app code/Dockerfile are elsewhere
       - 'app1/**'
-      - '.github/workflows/app_build_push.yaml'
+      - '.github/workflows/app_build_push.yml'
   workflow_dispatch: # Allow manual trigger
 
 env:
