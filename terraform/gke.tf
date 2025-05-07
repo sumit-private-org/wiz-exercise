@@ -15,7 +15,18 @@ resource "google_container_cluster" "primary" {
   logging_service    = "logging.googleapis.com/kubernetes" # Enable Cloud Logging for K8s
   monitoring_service = "monitoring.googleapis.com/kubernetes" # Enable Cloud Monitoring for K8s
 
- 
+  addons_config {
+    network_policy_config {
+      disabled = false # Set to false to enable Network Policy
+    }
+  }
+
+  # Explicitly enable Network Policy and specify the provider (Calico is common)
+  network_policy {
+    enabled  = true
+    provider = "CALICO" # Or "PROVIDER_UNSPECIFIED" if you want GKE to pick
+  }
+
   enable_legacy_abac = false
   master_auth {
     client_certificate_config {
