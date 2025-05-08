@@ -20,11 +20,15 @@ resource "google_container_cluster" "primary" {
       disabled = false # Set to false to enable Network Policy
     }
   }
+  
+  # Enable GKE Dataplane V2
+  datapath_provider = "ADVANCED_DATAPATH"
 
   # Explicitly enable Network Policy and specify the provider (Calico is common)
+  # Network Policy is enabled by default with Dataplane V2.
   network_policy {
     enabled  = true
-    provider = "CALICO" # Or "PROVIDER_UNSPECIFIED" if you want GKE to pick
+    # provider = "PROVIDER_UNSPECIFIED"
   }
 
   enable_legacy_abac = false
