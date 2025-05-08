@@ -7,7 +7,7 @@ on:
   #  paths:
       # Adjust path if your terraform files are elsewhere
   #    - 'terraform/**'
-  #    - '.github/workflows/infra_deploy_terraform.yaml'
+  #    - '.github/workflows/infra_deploy_terraform.yml'
   workflow_dispatch: # Allow manual trigger
 
 env:

@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Use this script to delete all resources created by the Terraform configuration when Terraform state is lost.
+
 # --- Configuration ---
 # !!! IMPORTANT: Set these variables correctly !!!
 PROJECT_ID="clgcporg10-183"
