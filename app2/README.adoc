@@ -1,4 +1,4 @@
-= Build an Neo4j-backed Chatbot using Python
+= Cloud Misconfiguration Agent using Langchain and Neo4j
 
 == Running the application
 
