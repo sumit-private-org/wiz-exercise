@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 = Cloud Misconfiguration Agent using Langchain and Neo4j
+=======
+= Build an Neo4j-backed Agentic AI Chatbot using Python to identify Cloud Misconfigurations
+>>>>>>> 349a588 (final commit)
 
 == Running the application
 
@@ -12,6 +16,12 @@ Then run the `streamlit run` command to start the app on link:http://localhost:8
 
 [source,sh]
 streamlit run bot.py
+
+You can also run this application using Docker container engine:
+
+[source,sh]
+docker build -t cloud-misconfig-agent .
+docker run -p 8501:8501 cloud-misconfig-agent
 
 == Tests
 

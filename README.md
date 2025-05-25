@@ -174,11 +174,11 @@ Modern DevOps practices were used to automate infrastructure provisioning and ap
 
 ## 8. Extra Credit
 
-*   **Agentic RAG Application along with Neo4j Graph Database and Graph Analytics for Cloud Security Analysis:**
-    Leveraging my background as a Neo4j Solutions Engineer, I conceptualized and have experience building an Agentic RAG (Retrieval Augmented Generation) application. This application utilizes a Neo4j Graph Database as its knowledge base, populated with sample AWS Cloud resources and their associated configuration data.
-    *   **Primary Use Case:** To identify cloud misconfigurations by querying the graph for patterns indicative of weaknesses. This application is written in Python using Streamlit framework, Langchain Agents and Neo4j plugin, and stored in `app2/` location.
-    *   **Advanced Use Cases Showcased:**
-        *   **Lateral Movement Path Analysis:** Using Neo4j Graph Visualization to identify potential attack paths an adversary could take by exploiting interconnected misconfigurations and overly permissive access.
-        *   **Risk Prioritization:** Applying graph-based centrality algorithms based on connectivity and asset criticality to prioritize the remediation of misconfigurations that pose the greatest risk or are key enablers for widespread compromise.
+*   **Agentic AI Assistant to identify cloud misconfiguratons:**
+    Leveraging my background as a Neo4j Solutions Engineer, I conceptualized and have experience building an Agentic AI RAG (Retrieval Augmented Generation) application. This application utilizes a Neo4j Graph Database as its knowledge base, populated with sample AWS Cloud resources (LLM Generated mock data) and their associated configuration data.
+    *   **Primary Use Case:** To identify cloud misconfigurations by querying the graph for patterns indicative of weaknesses. This application is written in LLM (OpenAI GPT-4o model),Python using Streamlit framework, Langchain Agents and Neo4j plugin, and stored in `app2/` location.
+*   **Advanced Use Cases Showcased using Neo4j Graph Database and Graph Analytics for Cloud Security Risk Analysis:**
+    *   **Lateral Movement Path Analysis:** Using Neo4j Graph Visualization to identify potential attack paths an adversary could take by exploiting interconnected misconfigurations and overly permissive access.
+    *   **Risk Prioritization:** Applying graph-based centrality algorithms based on connectivity and asset criticality to prioritize the remediation of vulnerabities that pose the greatest risk or are key enablers for widespread compromise.
     
-    This approach demonstrates how graph technology can provide deeper insights into complex cloud environments, moving beyond simple list-based findings to understand the relationships and "toxic combinations" of risks – a core tenet of modern cloud security posture management that aligns with Wiz's value proposition.
+    This approach demonstrates how Agentic AI and Graph technology can provide deeper insights into complex cloud environments, moving beyond simple list-based findings to understand the relationships and "toxic combinations" of risks – a core tenet of modern cloud security posture management that aligns with Wiz's value proposition.

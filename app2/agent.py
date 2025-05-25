@@ -43,36 +43,42 @@ def get_memory(session_id):
 
 # Define the Agent prompt
 agent_prompt = PromptTemplate.from_template("""
-You are a cloud security expert working over a Neo4j graph of cloud resources and their misconfigurations.
+You run in a loop of Thought, Action, Action Input, Observation.
+At the end of the loop you output an Answer
+Use Thought to describe your thoughts about the question you have been asked.
+Use Action to run one of the actions available to you - the input of the action will be the Action Input
+Observation will be the result of running those actions.
 
-Be as helpful as possible and return as much information as possible.
-Do not answer any questions that do not relate to cloud (AWS, Azure, GCP).
-
-Answer first using the information that you yourself retrieved from Neo4j.
-If you are not able to answer the question using the information you retrieved from Neo4j, then use your own knowledge to answer the question.
-
-TOOLS:
-------
-
-You have access to the following tools:
-
+Your available actions are:
 {tools}
 
 To use a tool, please use the following format:
 
-```
-Thought: Do I need to use a tool? Yes
-Action: the action to take, should be one of [{tool_names}]
-Action Input: the input to the action
+Thought: I should retreive this information from Neo4j Graph Database using a tool
+Action: the name of the action to take, must be one of [{tool_names}]
+Action Input: The input to the action
 Observation: the result of the action
-```
 
 When you have a response to say to the Human, or if you do not need to use a tool, you MUST use the format:
 
 ```
-Thought: Do I need to use a tool? No
+Thought: I need to respond now
 Final Answer: [your response here]
-```
+
+Example session:
+
+Question: Which RDS instances have encryption turned off?
+Thought: I should retreive this information using Neo4j Graph Database using Cloud Misconfiguration information
+Action: Cloud Misconfiguration information
+Action Input: {{"query": "MATCH (rds:RDSInstance) WHERE rds.encryption = false RETURN rds.id"}}
+
+You will be called again with this:
+
+Observation: 'prod-db-2, prod-db-1'
+
+Thought:I need to respond now
+
+Final Answer: The RDS instances with IDs 'prod-db-2' and 'prod-db-1' have encryption turned off in your AWS account
 
 Begin!
 
