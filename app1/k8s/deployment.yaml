@@ -20,7 +20,7 @@ spec:
       - name: tasky-app-container
         # Replace with your actual image path in Artifact Registry
         image: us-central1-docker.pkg.dev/clgcporg10-183/wiz-app-repo/tasky-app:latest
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         ports:
         - containerPort: 8080 # Adjust to your application's port (e.g., 3000 for Node.js tasky, 8080 for Go tasky)
         env:
