@@ -14,7 +14,7 @@ SHELL ["/bin/bash", "-c"]
 WORKDIR /app
 COPY --from=build  /go/src/tasky/tasky .
 COPY --from=build  /go/src/tasky/assets ./assets
-RUN echo "Wiz Exercise Content" > wizexercise.txt
+RUN echo "Wiz Exercise Demo" > wizexercise.txt
 EXPOSE 8080
 # Define environment variables (if needed, though connection string is better via K8s secrets)
 # ENV MONGODB_URI="mongodb://user:pass@host:port/db"
